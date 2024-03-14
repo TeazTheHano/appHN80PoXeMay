@@ -3,17 +3,20 @@ import React, { useEffect, useState } from 'react'
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 import styles from './stylesheet'
 import { vw } from "react-native-expo-viewport-units";
-import Data from './Data';
+import { useRoute } from '@react-navigation/native';
+// import Data from './Data';
 
 export default function Map() {
-  const data = Data()
-  const [latitude, setLatitude] = useState(data.location[1])
-  const [longitude, setLongitude] = useState(data.location[0])
+  // const data = Data()
+  const route = useRoute();
+  const { accData } = route.params;
+  const [latitude, setLatitude] = useState(accData.location[1])
+  const [longitude, setLongitude] = useState(accData.location[0])
 
   useEffect(() => {
-    setLatitude(data.location[1])
-    setLongitude(data.location[0])
-  }, [data.location[0], data.location[1]])
+    setLatitude(accData.location[1])
+    setLongitude(accData.location[0])
+  }, [accData.location[0], accData.location[1]])
 
   return (
     <View style={[styles.w90vw, styles.h60vh, styles.alignSelfCenter, styles.shadowW0H05Black, styles.borderRadius20, { backgroundColor: 'white' }]}>

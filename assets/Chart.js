@@ -4,10 +4,15 @@ import { LineChart } from "react-native-gifted-charts";
 import styles from './stylesheet';
 import { vw } from 'react-native-expo-viewport-units';
 import { NotoReg10 } from './Class';
-import Data from './Data';
+// import Data from './Data';
+import { useRoute } from '@react-navigation/native';
 
-export default function Chart() {
-    const [chartData, setChartData] = useState(Data())
+export default function Chart({ navigation }) {
+    // const [chartData, setChartData] = useState(Data())
+
+    const route = useRoute();
+    const { accData } = route.params;
+    const [chartData, setChartData] = useState(accData)
 
     function putValueToChart(dataSetRecieved) {
         const dataSet = []

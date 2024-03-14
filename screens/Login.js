@@ -1,5 +1,6 @@
 import { ActivityIndicator, Image, ImageBackground, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { Component, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
 import colorStyle, { componentStyleSheet } from '../assets/componentStyleSheet'
 import styles from '../assets/stylesheet'
 import { vh, vw } from 'react-native-expo-viewport-units'
@@ -17,8 +18,12 @@ export default function Login() {
     const [isShowPassword, setIsShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
+    const [accData, setAccData] = useState({})
+
     const inputContainerStyle = [styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]
     const inputStyle = [styles.flex1, styles.paddingV2vw,]
+
+    const navigation = useNavigation()
 
     const loginForm = () => {
         return (
@@ -31,6 +36,7 @@ export default function Login() {
                         returnKeyType="next"
                         onSubmitEditing={() => { this.secondTextInput.focus(); }}
                         blurOnSubmit={false}
+                        autoCapitalize="none"
                         placeholder="Tên đăng nhập" style={inputStyle} placeholderTextColor={'gray'} />
                 </View>
                 <View style={inputContainerStyle}>
@@ -40,6 +46,7 @@ export default function Login() {
                         value={loginPassword}
                         secureTextEntry={!isShowPassword}
                         ref={(input) => { this.secondTextInput = input; }}
+                        autoCapitalize="none"
                         placeholder="Mật khẩu" style={inputStyle} placeholderTextColor={'gray'} />
                     <TouchableOpacity onPress={() => setIsShowPassword(!isShowPassword)}>
                         {isShowPassword ? visibilityIcon(vw(6), vw(6)) : inVisibilityIcon(vw(6), vw(6))}
@@ -70,6 +77,7 @@ export default function Login() {
                         returnKeyType="next"
                         onSubmitEditing={() => { this.thirdTextInput.focus(); }}
                         blurOnSubmit={false}
+                        autoCapitalize="none"
                         ref={(input) => { this.secondTextInput = input; }}
                         placeholder="Tên đăng nhập" style={inputStyle} placeholderTextColor={'gray'} />
                 </View>
@@ -82,6 +90,7 @@ export default function Login() {
                         returnKeyType="next"
                         onSubmitEditing={() => { this.forthTextInput.focus(); }}
                         blurOnSubmit={false}
+                        autoCapitalize="none"
                         ref={(input) => { this.thirdTextInput = input; }}
                         placeholder="Mật khẩu" style={inputStyle} placeholderTextColor={'gray'} />
                     <TouchableOpacity onPress={() => setIsShowPassword(!isShowPassword)}>
@@ -95,6 +104,7 @@ export default function Login() {
                         value={registerPassword2}
                         ref={(input) => { this.forthTextInput = input; }}
                         secureTextEntry={!isShowPassword}
+                        autoCapitalize="none"
                         placeholder="Nhập lại mật khẩu" style={inputStyle} placeholderTextColor={'gray'} />
                     <TouchableOpacity onPress={() => setIsShowPassword(!isShowPassword)}>
                         {isShowPassword ? visibilityIcon(vw(6), vw(6)) : inVisibilityIcon(vw(6), vw(6))}
@@ -112,7 +122,7 @@ export default function Login() {
             setIsLoading(true)
 
             try {
-                fetch('192.168.100.80:3000/controll', {
+                fetch('http://moitruongxanh.edu.vn/controll', {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
@@ -124,17 +134,18 @@ export default function Login() {
                         matKhau: loginPassword,
                     }),
                 })
-                    .then((response) => response.json()).then((json) => { console.log(json) })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        if (json) {
+                            setIsLoading(false)
+                            console.log(json);
+                            navigation.navigate('Home', { accData: json })
+                        }
+                    })
             } catch (error) {
-
-            } finally {
-                setIsLoading(false)
-
-                // move to main screen
-                // get the id
+                console.error('Network request failed:', error);
             }
         }
-
     }
 
     const registerFnc = () => {
@@ -147,7 +158,32 @@ export default function Login() {
         } else {
             setIsLoading(true)
 
-            // things to register
+            try {
+                fetch('http://moitruongxanh.edu.vn/addUser', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userName: registerUser,
+                        numberPhone: registerName,
+                        address: 'Hà Nội',
+                        password: registerPassword,
+                        deviceType: 'mobile',
+                    }),
+                })
+                    .then((response) => console.log(response))
+                    // .then((json) => {
+                    //     if (json) {
+                    //         setIsLoading(false)
+                    //         console.log(json);
+                    //         navigation.navigate('Home', { accData: json })
+                    //     }
+                    // })
+            } catch (error) {
+                console.error('Network request failed:', error);
+            }
         }
     }
 

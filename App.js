@@ -16,6 +16,7 @@ import Home from './screens/Home';
 import InfoScreen from './screens/InfoScreen';
 import LogDetail from './screens/LogDetail';
 import LogList from './screens/LogList';
+import Data from './assets/Data';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -27,10 +28,11 @@ const App = () => {
         } 
       }}>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Home" component={Home} /> */}
-        {/* <Stack.Screen name="InfoScreen" component={InfoScreen} /> */}
-        {/* <Stack.Screen name="LogDetail" component={LogDetail} /> */}
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="InfoScreen" component={InfoScreen} />
+        <Stack.Screen name="LogDetail" component={LogDetail} />
         <Stack.Screen name="LogList" component={LogList} />
+        <Stack.Screen name="Data" component={Data} />
       </Stack.Navigator>
     </NavigationContainer>
   )

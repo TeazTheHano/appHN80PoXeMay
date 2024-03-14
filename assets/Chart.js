@@ -4,7 +4,7 @@ import { LineChart } from "react-native-gifted-charts";
 import styles from './stylesheet';
 import { vw } from 'react-native-expo-viewport-units';
 import { NotoReg10 } from './Class';
-// import Data from './Data';
+import Data from './Data';
 import { useRoute } from '@react-navigation/native';
 
 export default function Chart({ navigation }) {
@@ -13,6 +13,7 @@ export default function Chart({ navigation }) {
     const route = useRoute();
     const { accData } = route.params;
     const [chartData, setChartData] = useState(accData)
+    const [newDataFetch, setNewDataFetch] = useState({})
 
     function putValueToChart(dataSetRecieved) {
         const dataSet = []
@@ -37,6 +38,32 @@ export default function Chart({ navigation }) {
         let max = Math.max(...newArr);
         return max + 10;
     }
+
+    function pushNewValueToEachEmissionsData(arr) {
+        let newArr = chartData
+
+        for (let index = 0; index < arr.length; index++) {
+            newArr.emissions[index].data.push(arr[index])
+        }
+
+        setChartData(newArr)
+    }
+    // pushNewValueToEachEmissionsData()
+
+    useEffect(() => {
+        setInterval(() => {
+            try {
+                fetch(`http://moitruongxanh.edu.vn/get-data-to-render/${accData.id}`)
+                    .then((response) => response.json())
+                    .then((json) => {
+                        pushNewValueToEachEmissionsData(json.emissions)
+                    })
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }, 15000)
+    }, [])
 
     return (
         <View style={[styles.flexColCenter, styles.gap4vw,]}>

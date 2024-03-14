@@ -18,6 +18,22 @@ export default function Map() {
     setLongitude(accData.location[0])
   }, [accData.location[0], accData.location[1]])
 
+  useEffect(() => {
+    setInterval(() => {
+      try {
+        fetch(`http://moitruongxanh.edu.vn/get-data-to-render/${accData.id}`)
+          .then((response) => response.json())
+          .then((json) => {
+            setLatitude(json.location[1])
+            setLongitude(json.location[0])
+          })
+      }
+      catch (error) {
+        // console.log(error);
+      }
+    }, 15000)
+  }, [])
+
   return (
     <View style={[styles.w90vw, styles.h60vh, styles.alignSelfCenter, styles.shadowW0H05Black, styles.borderRadius20, { backgroundColor: 'white' }]}>
       <View style={[styles.borderRadius20, { overflow: 'hidden' }]}>
@@ -29,10 +45,10 @@ export default function Map() {
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
-          // onRegionChange={(region) => {
-          //   setLatitude(region.latitude)
-          //   setLongitude(region.longitude)
-          // }}
+        // onRegionChange={(region) => {
+        //   setLatitude(region.latitude)
+        //   setLongitude(region.longitude)
+        // }}
         >
           <Marker
             key={1}

@@ -136,10 +136,13 @@ export default function Login() {
                 })
                     .then((response) => response.json())
                     .then((json) => {
-                        if (json) {
+                        if (json.id) {
                             setIsLoading(false)
                             console.log(json);
                             navigation.navigate('Home', { accData: json })
+                        } else {
+                            alert('Sai thông tin đăng nhập. Vui lòng thử lại.')
+                            setIsLoading(false)
                         }
                     })
             } catch (error) {

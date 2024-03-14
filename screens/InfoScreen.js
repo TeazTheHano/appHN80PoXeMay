@@ -10,7 +10,7 @@ import { marginBottomForScrollView } from '../assets/component'
 // import { LineChart } from 'react-native-gifted-charts'
 
 export default function InfoScreen() {
-  const [isShowChart, setIsShowChart] = useState(false)
+  const [isShowChart, setIsShowChart] = useState(true)
 
   // const chartApp = () => {
   //   const data = [{ value: 15 }, { value: 30 }, { value: 26 }, { value: 40 }]

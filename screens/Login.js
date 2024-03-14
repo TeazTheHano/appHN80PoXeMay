@@ -1,5 +1,5 @@
-import { Image, ImageBackground, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { ActivityIndicator, Image, ImageBackground, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { Component, useState } from 'react'
 import colorStyle, { componentStyleSheet } from '../assets/componentStyleSheet'
 import styles from '../assets/stylesheet'
 import { vh, vw } from 'react-native-expo-viewport-units'
@@ -15,11 +15,15 @@ export default function Login() {
     const [registerPassword2, setRegisterPassword2] = useState('')
     const [registerName, setRegisterName] = useState('')
     const [isShowPassword, setIsShowPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const inputContainerStyle = [styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]
+    const inputStyle = [styles.flex1, styles.paddingV2vw,]
 
     const loginForm = () => {
         return (
             <View style={[styles.w100, styles.flexCol, styles.gap2vw,]}>
-                <View style={[styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]}>
+                <View style={inputContainerStyle}>
                     {userLoginIcon(vw(6), vw(6))}
                     <TextInput
                         onChangeText={(text) => setLoginUser(text)}
@@ -27,16 +31,16 @@ export default function Login() {
                         returnKeyType="next"
                         onSubmitEditing={() => { this.secondTextInput.focus(); }}
                         blurOnSubmit={false}
-                        placeholder="Tên đăng nhập" style={[styles.flex1,]} placeholderTextColor={'gray'} />
+                        placeholder="Tên đăng nhập" style={inputStyle} placeholderTextColor={'gray'} />
                 </View>
-                <View style={[styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]}>
+                <View style={inputContainerStyle}>
                     {passwordIcon(vw(6), vw(6))}
                     <TextInput
                         onChangeText={(text) => setLoginPassword(text)}
                         value={loginPassword}
                         secureTextEntry={!isShowPassword}
                         ref={(input) => { this.secondTextInput = input; }}
-                        placeholder="Mật khẩu" style={[styles.flex1,]} placeholderTextColor={'gray'} />
+                        placeholder="Mật khẩu" style={inputStyle} placeholderTextColor={'gray'} />
                     <TouchableOpacity onPress={() => setIsShowPassword(!isShowPassword)}>
                         {isShowPassword ? visibilityIcon(vw(6), vw(6)) : inVisibilityIcon(vw(6), vw(6))}
                     </TouchableOpacity>
@@ -48,7 +52,7 @@ export default function Login() {
     const registerForm = () => {
         return (
             <View style={[styles.w100, styles.flexCol, styles.gap2vw,]}>
-                <View style={[styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]}>
+                <View style={inputContainerStyle}>
                     {namecardLoginIcon(vw(6), vw(6))}
                     <TextInput
                         onChangeText={(text) => setRegisterName(text)}
@@ -56,9 +60,9 @@ export default function Login() {
                         returnKeyType="next"
                         onSubmitEditing={() => { this.secondTextInput.focus(); }}
                         blurOnSubmit={false}
-                        placeholder="Tên người dùng" style={[styles.flex1,]} placeholderTextColor={'gray'} />
+                        placeholder="Tên người dùng" style={inputStyle} placeholderTextColor={'gray'} />
                 </View>
-                <View style={[styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]}>
+                <View style={inputContainerStyle}>
                     {userLoginIcon(vw(6), vw(6))}
                     <TextInput
                         onChangeText={(text) => setRegisterUser(text)}
@@ -67,9 +71,9 @@ export default function Login() {
                         onSubmitEditing={() => { this.thirdTextInput.focus(); }}
                         blurOnSubmit={false}
                         ref={(input) => { this.secondTextInput = input; }}
-                        placeholder="Tên đăng nhập" style={[styles.flex1,]} placeholderTextColor={'gray'} />
+                        placeholder="Tên đăng nhập" style={inputStyle} placeholderTextColor={'gray'} />
                 </View>
-                <View style={[styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]}>
+                <View style={inputContainerStyle}>
                     {passwordIcon(vw(6), vw(6))}
                     <TextInput
                         onChangeText={(text) => setRegisterPassword(text)}
@@ -79,19 +83,19 @@ export default function Login() {
                         onSubmitEditing={() => { this.forthTextInput.focus(); }}
                         blurOnSubmit={false}
                         ref={(input) => { this.thirdTextInput = input; }}
-                        placeholder="Mật khẩu" style={[styles.flex1,]} placeholderTextColor={'gray'} />
+                        placeholder="Mật khẩu" style={inputStyle} placeholderTextColor={'gray'} />
                     <TouchableOpacity onPress={() => setIsShowPassword(!isShowPassword)}>
                         {isShowPassword ? visibilityIcon(vw(6), vw(6)) : inVisibilityIcon(vw(6), vw(6))}
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.w100, styles.flexRow, styles.gap2vw, styles.alignItemsCenter, styles.paddingH2vw, styles.borderRadius10, { backgroundColor: colorStyle.sec3 }]}>
+                <View style={inputContainerStyle}>
                     {passwordIcon(vw(6), vw(6))}
                     <TextInput
                         onChangeText={(text) => setRegisterPassword2(text)}
                         value={registerPassword2}
                         ref={(input) => { this.forthTextInput = input; }}
                         secureTextEntry={!isShowPassword}
-                        placeholder="Nhập lại mật khẩu" style={[styles.flex1,]} placeholderTextColor={'gray'} />
+                        placeholder="Nhập lại mật khẩu" style={inputStyle} placeholderTextColor={'gray'} />
                     <TouchableOpacity onPress={() => setIsShowPassword(!isShowPassword)}>
                         {isShowPassword ? visibilityIcon(vw(6), vw(6)) : inVisibilityIcon(vw(6), vw(6))}
                     </TouchableOpacity>
@@ -101,27 +105,61 @@ export default function Login() {
     }
 
     const loginFnc = () => {
-        alert(
-            `Login
-            ${loginPassword}
-            ${typeof loginPassword}
-            
-            `
-        )
+        if (loginUser == '' || loginPassword == '') {
+            alert('Vui lòng nhập đầy đủ thông tin')
+        }
+        else {
+            setIsLoading(true)
+
+            try {
+                fetch('192.168.100.80:3000/controll', {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        deviceType: 'mobile',
+                        tenDangNhap: loginUser,
+                        matKhau: loginPassword,
+                    }),
+                })
+                    .then((response) => response.json()).then((json) => { console.log(json) })
+            } catch (error) {
+
+            } finally {
+                setIsLoading(false)
+
+                // move to main screen
+                // get the id
+            }
+        }
 
     }
 
     const registerFnc = () => {
-        if (registerPassword != registerPassword2) {
+        if (registerUser == '' || registerPassword == '' || registerPassword2 == '' || registerName == '') {
+            alert('Vui lòng nhập đầy đủ thông tin')
+
+        } else if (registerPassword != registerPassword2) {
             alert('Mật khẩu không trùng khớp')
             return
+        } else {
+            setIsLoading(true)
+
+            // things to register
         }
     }
 
     return (
         <SafeAreaView style={{ backgroundColor: colorStyle.main, flex: 1 }}>
             <StatusBar barStyle="dark-content" />
-            <ImageBackground source={require('../assets/images/loginPattem.png')} style={[styles.h100vh, styles.centerByFlex, { objectFit: 'cover' }]} >
+            {isLoading ?
+                <View style={[styles.w100vw, styles.h100vh, styles.positionAbsolute, styles.centerByFlex, { zIndex: 10, backgroundColor: 'rgba(0,0,0,0.6)' }]}>
+                    <ActivityIndicator size="large" color="white" />
+                </View>
+                : null}
+            <ImageBackground source={require('../assets/images/loginPattem.png')} style={[styles.flex1, styles.centerByFlex, { objectFit: 'cover' }]} >
                 <View style={[styles.w90vw, styles.h80vh, styles.borderRadius20, styles.flexCol, styles.alignItemsCenter, styles.padding8vw, { backgroundColor: colorStyle.white, }]}>
                     <View style={[styles.flexCol, styles.alignItemsCenter, styles.gap4vw, styles.flex1, styles.justifyContentCenter]}>
                         <NotoDPBlack28>App quản lý</NotoDPBlack28>
@@ -132,7 +170,7 @@ export default function Login() {
                         {isLoginForm ?
                             <View>
                                 <TouchableOpacity
-                                    onPress={()=>{loginFnc()}}
+                                    onPress={() => { loginFnc() }}
                                     style={[styles.w100, styles.paddingV2vw, styles.flexRowCenter, styles.borderRadius10, { backgroundColor: colorStyle.yellow }]}>
                                     <NotoBold20 style={{ lineHeight: vw(6) }}>Đăng nhập</NotoBold20>
                                 </TouchableOpacity>
@@ -147,7 +185,7 @@ export default function Login() {
                             </View>
                             : <View>
                                 <TouchableOpacity
-                                    onPress={()=>{registerFnc()}}
+                                    onPress={() => { registerFnc() }}
                                     style={[styles.w100, styles.paddingV2vw, styles.flexRowCenter, styles.borderRadius10, { backgroundColor: colorStyle.yellow }]}>
                                     <NotoBold20 style={{ lineHeight: vw(6) }}>Đăng ký</NotoBold20>
                                 </TouchableOpacity>

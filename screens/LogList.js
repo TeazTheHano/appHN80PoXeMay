@@ -1,42 +1,44 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, FlatList } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function LogList() {
-  const [chartData1, setChartData1] = useState({})
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [isCalling, setCalling] = useState(false);
 
-  function randomChartData1() {
-    chartData1.labels = [];
-    chartData1.emissions = [];
-    for (let i = 0; i < 10; i++) {
-      chartData1.labels.push(`07:${i}0`);
-      chartData1.emissions[i] = { data: [] };
-      for (let j = 0; j < 10; j++) {
-        chartData1.emissions[i].data.push(Math.floor(Math.random() * 100));
-      }
+  const getMovies = async () => {
+    try {
+      const response = await fetch('https://reactnative.dev/movies.json');
+      const json = await response.json();
+      setData(json.movies);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setChartData1({ ...chartData1 })
-    console.log('1: ' + typeof chartData1.emissions);
-    console.log('1: ' + typeof chartData1.emissions[0]);
-    console.log('1: ' + typeof chartData1.emissions[0].data);
-    console.log('1: ' + typeof chartData1.emissions[0].data[0]);
-    console.log(chartData1);
-    console.log(chartData1.emissions);
-    console.log(chartData1.emissions[0]);
-    console.log(chartData1.emissions[2].data);
-    console.log(chartData1.emissions[0].data[0]);
-    console.log(chartData1.emissions[0].data[1]);
-    console.log(chartData1.emissions[0].data[2]);
-  }
   return (
-    <View>
-      <TouchableOpacity onPress={()=>{randomChartData1()}}>
+    <View style={{ flex: 1, padding: 24 }}>
+      <TouchableOpacity onPress={() => { getMovies() }}>
         <Text>LogList</Text>
       </TouchableOpacity>
-      {/* render the object chartData1 to the screen */}
-      <Text>{JSON.stringify(chartData1)}</Text>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item }) => (
+            <Text>
+              {item.title}, {item.releaseYear}
+            </Text>
+          )}
+        />
+      )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({})

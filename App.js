@@ -26,10 +26,10 @@ const App = () => {
           
         } 
       }}>
-        {/* <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         {/* <Stack.Screen name="Home" component={Home} /> */}
-        <Stack.Screen name="InfoScreen" component={InfoScreen} />
-        <Stack.Screen name="LogDetail" component={LogDetail} />
+        {/* <Stack.Screen name="InfoScreen" component={InfoScreen} /> */}
+        {/* <Stack.Screen name="LogDetail" component={LogDetail} /> */}
         <Stack.Screen name="LogList" component={LogList} />
       </Stack.Navigator>
     </NavigationContainer>

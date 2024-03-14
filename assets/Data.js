@@ -79,7 +79,7 @@ export default function Data() {
         randomChartData();
         setInterval(() => {
             addOneNewDataToEachDataChart();
-        }, 3000)
+        }, 15000)
     }
     , [])
 

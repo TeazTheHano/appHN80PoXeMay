@@ -56,6 +56,7 @@ export default function Chart({ navigation }) {
                 fetch(`http://moitruongxanh.edu.vn/get-data-to-render/${accData.id}`)
                     .then((response) => response.json())
                     .then((json) => {
+                        console.log(json.emissions);
                         pushNewValueToEachEmissionsData(json.emissions)
                     })
             }

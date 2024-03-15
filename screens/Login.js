@@ -176,14 +176,19 @@ export default function Login() {
                         deviceType: 'mobile',
                     }),
                 })
-                    .then((response) => console.log(response))
-                    // .then((json) => {
-                    //     if (json) {
-                    //         setIsLoading(false)
-                    //         console.log(json);
-                    //         navigation.navigate('Home', { accData: json })
-                    //     }
-                    // })
+                    .then((json) => {
+                        console.log('11: ' + json);
+                        console.log('11: ' + typeof json);
+                        console.log('12: ' + json.ok);
+                        setIsLoading(false)
+                        if (json.ok) {
+                            alert('Đăng ký thành công. Xin mời đăng nhập.')
+                            setIsLoginForm(true)
+                        } else {
+                            alert('Đăng ký thất bại. Vui lòng thử lại.')
+                        }
+                    }
+                    )
             } catch (error) {
                 console.error('Network request failed:', error);
             }

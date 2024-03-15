@@ -1055,6 +1055,14 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
 
+    objectFitCover: {
+        objectFit: 'cover',
+    },
+
+    objectFitContain: {
+        objectFit: 'contain',
+    },
+
     image100Cover: {
         objectFit: 'cover',
         height: '100%',

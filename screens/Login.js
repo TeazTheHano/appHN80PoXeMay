@@ -121,7 +121,7 @@ export default function Login() {
         else {
             setIsLoading(true)
 
-            try {
+            function fetchData(retries = 3) {
                 fetch('http://moitruongxanh.edu.vn/controll', {
                     method: 'POST',
                     headers: {
@@ -145,8 +145,22 @@ export default function Login() {
                             setIsLoading(false)
                         }
                     })
+                    .catch((error) => {
+                        console.error('Network request failed:', error);
+                        if (retries > 0) {
+                            setTimeout(() => fetchData(retries - 1), 5000); // retry after 5 seconds
+                        } else {
+                            alert('Network error. Please check your internet connection.');
+                            setIsLoading(false)
+
+                        }
+                    });
+            }
+
+            try {
+                fetchData();
             } catch (error) {
-                console.error('Network request failed:', error);
+                console.error('Unexpected error:', error);
             }
         }
     }
@@ -161,7 +175,7 @@ export default function Login() {
         } else {
             setIsLoading(true)
 
-            try {
+            function registerData(retries = 3) {
                 fetch('http://moitruongxanh.edu.vn/addUser', {
                     method: 'POST',
                     headers: {
@@ -176,10 +190,8 @@ export default function Login() {
                         deviceType: 'mobile',
                     }),
                 })
+                    .then((response) => response.json())
                     .then((json) => {
-                        console.log('11: ' + json);
-                        console.log('11: ' + typeof json);
-                        console.log('12: ' + json.ok);
                         setIsLoading(false)
                         if (json.ok) {
                             alert('Đăng ký thành công. Xin mời đăng nhập.')
@@ -187,10 +199,22 @@ export default function Login() {
                         } else {
                             alert('Đăng ký thất bại. Vui lòng thử lại.')
                         }
-                    }
-                    )
+                    })
+                    .catch((error) => {
+                        console.error('Network request failed:', error);
+                        if (retries > 0) {
+                            setTimeout(() => registerData(retries - 1), 5000); // retry after 5 seconds
+                        } else {
+                            alert('Network error. Please check your internet connection.');
+                            setIsLoading(false)
+                        }
+                    });
+            }
+
+            try {
+                registerData();
             } catch (error) {
-                console.error('Network request failed:', error);
+                console.error('Unexpected error:', error);
             }
         }
     }
